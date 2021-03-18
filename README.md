@@ -1,4 +1,4 @@
-# Breezy HR Analytics
+# Breezy HR Recruitment Analytics
 If your company's recruitment department uses **[Breezy HR](https://breezy.hr)** as application tracking system, this app might enhance your **recruiting analytics** capabilities. 
 
 **This app allows you to:**
