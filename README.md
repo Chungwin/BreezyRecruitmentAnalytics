@@ -26,17 +26,17 @@ DB_PASSWORD=[db_password]
 DATABASE=[db_name]
 ```
 
-Run **positions.js** to keep your position data uptodate (published and closed ones)
-Run **candidates.js** to keep updating the latest candidate data
-Run **stream.js** to keep updating the lastest candidate actions 
+Run **positions.js** to keep your position data uptodate (published and closed ones)  
+Run **candidates.js** to keep updating the latest candidate dataw  
+Run **stream.js** to keep updating the lastest candidate actions   
 
 ## Project status: 
 This project is just at the very beginning and far from finished. First and foremost, it’s a training ground for me, a non-professional programmer, with the pleasant side effect that it scratches my own itch as a Tech Recruiter.
 
 ## Planned next: 
-Better error tracing
-Integrate **Calendly** data.
-Integrate **Google Calendar** data.
+Better error tracing and resolving.  
+Integrate **Calendly** data.  
+Integrate **Google Calendar** data.  
 
 Feedback is always very welcome!
 
