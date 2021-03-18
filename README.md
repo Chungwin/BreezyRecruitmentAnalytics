@@ -34,6 +34,7 @@ Run **stream.js** to keep updating the lastest candidate actions
 This project is just at the very beginning and far from finished. First and foremost, it’s a training ground for me, a non-professional programmer, with the pleasant side effect that it scratches my own itch as a Tech Recruiter.
 
 ## Planned next: 
+Better error tracing
 Integrate **Calendly** data.
 Integrate **Google Calendar** data.
 
