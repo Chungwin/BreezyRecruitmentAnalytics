@@ -38,6 +38,7 @@ Better error tracing and resolving.
 Integrate **Calendly** data.  
 Integrate **Google Calendar** data.  
 Logging of how many new positions were published during the last x-days.  
+Handle candidates that are moved from one position to another.  
 Docker & Deploy
 
 Feedback is always very welcome!
