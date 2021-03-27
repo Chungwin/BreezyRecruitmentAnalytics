@@ -47,7 +47,7 @@ const insertToDb = (responseJson) => {
                 })
             }
         
-        
+            
         }) 
 
         

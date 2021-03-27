@@ -37,6 +37,8 @@ This project is just at the very beginning and far from finished. First and fore
 Better error tracing and resolving.  
 Integrate **Calendly** data.  
 Integrate **Google Calendar** data.  
+Logging of how many new positions were published during the last x-days.  
+Docker & Deploy
 
 Feedback is always very welcome!
 
