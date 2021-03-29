@@ -9,6 +9,9 @@ const logger = require('../winston/logger')
 const { AUTH_TOKEN, COMPANY_ID } = require('../config')
 const insertCandidatesToDb = require('./insertCandidatesToDb')
 
+// TEST
+const movedCandidates = require('../movedCandidates')
+
 // ---------------------------
 
 const getBreezyCandidates = async (position_ids) => {
@@ -26,8 +29,9 @@ const getBreezyCandidates = async (position_ids) => {
                 candidate.position_id = position.position_id
                 candidate.position_state = position.position_state
             }
-    
-            insertCandidatesToDb(candidates_batch)
+            
+            movedCandidates(candidates_batch)
+            // insertCandidatesToDb(candidates_batch)
             console.log(`${chalk.underline(position.position_name)} inserted to DB  /  ${position_ids.indexOf(position) + 1} of ${position_ids.length}`)
         } catch (e) {
 
