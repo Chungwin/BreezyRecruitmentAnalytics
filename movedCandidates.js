@@ -3,11 +3,19 @@ const mysql = require('mysql')
 const chalk = require('chalk')
 const { DB_HOST, DB_USER, DB_PASSWORD, DATABASE } = require('./config')
 
-// breezySQL.candiates
-    // if candiateInDb younger than 6 months (GDPR) and NOT in new batch --> "candidate was moved" column in MySQL --> Should not getStream from this position_id
-    // if candidateInDB older than 6 months and not in ewn batch --> Normal. (Nothing happens to canidate in DB. Was deleted (GDPR) but want to keep data.) 
 
-// Where to find moved candidate? Other question. #MetaID.
+// breezySQL.stream       
+    // If error: candidate not on requested position
+        // Get meta_id and position of candidate (new batch)
+
+        // breezySQL.candidates
+        // Go to DB, look for meta_id. Get old position.
+        
+        // add to DB "Moved from <old_position> to <new_position>"
+        
+// When run candidates.js, candidate in old position is captured and candidate in new position is captured. Both entres marked with "moved"
+
+// Go to breezySQL.candidates, look where one candidate_meta_id has multiple entries --> moved candidates.
 
 
 const movedCandidates = (candidates_batch) => {
@@ -34,9 +42,12 @@ const movedCandidates = (candidates_batch) => {
             let creation_date = Date.parse(creation_date_format)
 
             if (!db_candidate_ids.includes(candidate._id) && (creation_date > six_months)) {
-                console.log(`Candidate not in DB: ${candidate}`)
+                //NEW position of candidate
+                console.log(candidate);
+
+
             } else {
-                console.log('Fine');
+                continue
             }
         }
         db.end()
