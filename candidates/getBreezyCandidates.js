@@ -30,8 +30,8 @@ const getBreezyCandidates = async (position_ids) => {
                 candidate.position_state = position.position_state
             }
             
-            movedCandidates(candidates_batch)
-            // insertCandidatesToDb(candidates_batch)
+            // movedCandidates(candidates_batch)
+            insertCandidatesToDb(candidates_batch)
             console.log(`${chalk.underline(position.position_name)} inserted to DB  /  ${position_ids.indexOf(position) + 1} of ${position_ids.length}`)
         } catch (e) {
 

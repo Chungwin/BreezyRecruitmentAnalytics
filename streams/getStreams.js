@@ -74,6 +74,28 @@ const getStreams = async (ids) => {
                 console.log(`${chalk.green(i)} of ${chalk.grey(ids.length)}  /  candidate stream updated  /  ${ids[i].position_name}`)
 
             } catch(e) {
+                // If 412 candidate not on requested position
+                    // Get Meta_ID --> ids[i].candidate_meta_id
+                    // SELECT * FROM breezySQL.canidates WHERE candidate_meta_id = ids[i].candidate_meta_id
+                    // Get new and old position(s)
+                    // Mark as moved in DB
+                if (e.statusCode === 412 || e.statusCode === 500) {
+                    var fullError = JSON.parse(e.error)
+                    var errorObj = {
+                        statusCode: e.statusCode,
+                        errorMessage: fullError.error.message,
+                        url: e.options.url
+                    }
+
+                    var scriptName = path.basename(__filename)
+                    logger.info(scriptName, errorObj)
+
+                    var now = new Date()
+                    var timestamp = dateFormat(now, 'isoDateTime')
+                    console.log(chalk.bgRed(`Error File written at ${timestamp} - Status Code ${e.statusCode} - ${fullError.error.message}`))
+                    continue
+                } 
+
 
                 var scriptName = path.basename(__filename)
                 logger.info(scriptName, e)
@@ -81,7 +103,7 @@ const getStreams = async (ids) => {
                 var now = new Date()
                 var timestamp = dateFormat(now, 'isoDateTime')
                 console.log(chalk.bgRed(`Error File written at ${timestamp}`))
-
+                
                 continue
             }
         }
