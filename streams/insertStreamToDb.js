@@ -31,6 +31,13 @@ const insertStreamToDb = (candidateStream) => {
            this.entered_previous_stage = entered_previous_stage
         }
     }
+    
+    let delete_sql = `DELETE FROM breezySQL.stream WHERE candidate_id = '${candidateStream[0].candidate_id}'`
+    db.query(delete_sql, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+    })
 
 
     for (var action of candidateStream) {

@@ -38,11 +38,11 @@ const getStreams = async (ids) => {
         // db.end()
 
         var stream_candidate_ids = db_stream_candidate_ids.map(obj => { return obj.candidate_id })
-        let thirty_days_ago = new Date().getTime() - 1000 * 60 * 60 * 24 * 30
+        let thirty_days_ago = new Date().getTime() - 1000 * 60 * 60 * 24 * 100
 
         var skip_counter = 0
         
-        for (var i = 10030; i < ids.length; i++) {
+        for (var i = 0; i < ids.length; i++) {
 
             try {
                 let update_date_format = ids[i].update_date
