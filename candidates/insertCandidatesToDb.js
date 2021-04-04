@@ -14,6 +14,7 @@ const insertCandidatesToDb = (candidates_batch) => {
         database: DATABASE
     })
 
+    const set_days = 30
     var new_counter = 0
     var old_counter = 0
 
@@ -24,7 +25,7 @@ const insertCandidatesToDb = (candidates_batch) => {
         }
 
         let db_candidate_ids = result.map( obj => { return obj.candidate_id })
-        let thirty_days_ago = new Date().getTime() - 1000 * 60 * 60 * 24 * 30
+        let thirty_days_ago = new Date().getTime() - 1000 * 60 * 60 * 24 * set_days
 
         for (var candidate of candidates_batch) {
 
@@ -88,8 +89,8 @@ const insertCandidatesToDb = (candidates_batch) => {
         }
        
         
-        console.log(`Candidates updated within 30 day: ${chalk.green(new_counter)}`)
-        console.log(`No updates within 30 days: ${chalk.blue(old_counter)}`)
+        console.log(`Candidates updated within last ${set_days} days: ${chalk.green(new_counter)}`)
+        console.log(`No updates within last ${set_days} days: ${chalk.blue(old_counter)}`)
         console.log(" ");
         
         db.end()

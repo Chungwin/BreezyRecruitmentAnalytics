@@ -35,10 +35,11 @@ const getStreams = async (ids) => {
             })
         })
 
-        db.end()
+        // db.end()
+        const days = 30
 
         var stream_candidate_ids = db_stream_candidate_ids.map(obj => { return obj.candidate_id })
-        let thirty_days_ago = new Date().getTime() - 1000 * 60 * 60 * 24 * 30
+        let thirty_days_ago = new Date().getTime() - 1000 * 60 * 60 * 24 * `${days}`
 
         var skip_counter = 0
         
@@ -74,6 +75,41 @@ const getStreams = async (ids) => {
                 console.log(`${chalk.green(i)} of ${chalk.grey(ids.length)}  /  candidate stream updated  /  ${ids[i].position_name}`)
 
             } catch(e) {
+                // If 412 candidate not on requested position
+                    // Get Meta_ID --> ids[i].candidate_meta_id
+                    // SELECT * FROM breezySQL.canidates WHERE candidate_meta_id = ids[i].candidate_meta_id
+                    // Get new and old position(s)
+                    // Mark as moved in DB
+                if (e.statusCode === 412 || e.statusCode === 500) {
+                    var fullError = JSON.parse(e.error)
+                    var errorObj = {
+                        statusCode: e.statusCode,
+                        errorMessage: fullError.error.message,
+                        url: e.options.url
+                    }
+
+                    var scriptName = path.basename(__filename)
+                    logger.info(scriptName, errorObj)
+
+                    var now = new Date()
+                    var timestamp = dateFormat(now, 'isoDateTime')
+                    console.log(chalk.bgRed(`Error File written at ${timestamp} - Status Code ${e.statusCode} - ${fullError.error.message}`))
+
+                    if (fullError.error.message === 'candidate is not on requested position') {
+                        let sql_query = `SELECT * FROM breezySQL.candidates WHERE candidate_meta_id = '${ids[i].candidate_meta_id}'`
+                        db.query(sql_query, (err, result) => {
+                            if (err) {
+                                console.log(err)
+                            }
+                            console.log(result)
+
+                    
+                        })
+                    }
+                    
+                    continue
+                } 
+
 
                 var scriptName = path.basename(__filename)
                 logger.info(scriptName, e)
@@ -81,7 +117,7 @@ const getStreams = async (ids) => {
                 var now = new Date()
                 var timestamp = dateFormat(now, 'isoDateTime')
                 console.log(chalk.bgRed(`Error File written at ${timestamp}`))
-
+                
                 continue
             }
         }
