@@ -36,9 +36,10 @@ const getStreams = async (ids) => {
         })
 
         // db.end()
+        const days = 30
 
         var stream_candidate_ids = db_stream_candidate_ids.map(obj => { return obj.candidate_id })
-        let thirty_days_ago = new Date().getTime() - 1000 * 60 * 60 * 24 * 100
+        let thirty_days_ago = new Date().getTime() - 1000 * 60 * 60 * 24 * `${days}`
 
         var skip_counter = 0
         
