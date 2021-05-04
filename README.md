@@ -2,7 +2,7 @@
 If your company's recruitment department uses **[Breezy HR](https://breezy.hr)** as application tracking system, this app might enhance your **recruiting analytics** capabilities. 
 
 **This app allows you to:**
-- Store all candidate-data in a SQL database, completely anonymised for as long as you want.
+- Store all candidate-data in a SQL database. Candidate names will be anonymized after 180 days.
 - Provide constantly updated  data and timelines about your current vacancies, candidates and every action of the candidate-journey including timestamps.
 - Store data in an optimised structure for more advanced analytics than provided by the Breezy App itself.
 - Error logs in extra file (errors.log)
@@ -41,7 +41,6 @@ Better error tracing and resolving.
 Integrate **Calendly** data.  
 Integrate **Google Calendar** data.  
 Logging of how many new positions were published during the last x-days.  
-Handle candidates that are moved from one position to another.  
 Docker & Deploy
 
 Feedback is always very welcome!
