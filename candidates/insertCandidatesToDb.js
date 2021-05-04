@@ -21,9 +21,11 @@ const insertCandidatesToDb = (candidates_batch) => {
         database: DATABASE
     })
 
+    const days_anonymize = 180
     const days_update = 30
     var new_counter = 0
     var old_counter = 0
+    var anonymized_counter = 0
 
     let sql_ids = 'SELECT candidate_id FROM breezySQL.candidates'
     db.query(sql_ids, (err, result) => {
@@ -33,10 +35,25 @@ const insertCandidatesToDb = (candidates_batch) => {
 
         let db_candidate_ids = result.map( obj => { return obj.candidate_id })
         let thirty_days_ago = new Date().getTime() - 1000 * 60 * 60 * 24 * days_update
+        let six_months_ago = new Date().getTime() - 1000 * 60 * 60 * 24 * days_anonymize
 
         for (var candidate of candidates_batch) {
             let update_date_format = candidate.updated_date
             let update_date = Date.parse(update_date_format)
+
+            let creation_date_format = candidate.creation_date
+            let creation_date = Date.parse(creation_date_format)
+
+            if (db_candidate_ids.includes(candidate._id) && creation_date < six_months_ago) {
+                let anonymize_sql = `UPDATE breezySQL.candidates SET ? WHERE candidate_id = '${candidate._id}'`
+                let post = {candidate_name: 'anonymized'}
+                db.query(anonymize_sql, post, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                })
+                anonymized_counter = anonymized_counter + 1
+            }
             
             if (db_candidate_ids.includes(candidate._id) && (update_date < thirty_days_ago)) {
                 old_counter = old_counter + 1
@@ -46,7 +63,7 @@ const insertCandidatesToDb = (candidates_batch) => {
                 
                 if (candidate.source === undefined || candidate.source === null) {
                     let update_sql = `UPDATE breezySQL.candidates SET ? WHERE candidate_id = '${candidate._id}'`
-                    let post = {candidate_id: `${candidate._id}`, candidate_meta_id: `${candidate.meta_id}`, origin: `${candidate.origin}`, source: 'undefined', position_name: `${candidate.position_name}`, position_id: `${candidate.position_id}`, position_state: `${candidate.position_state}`, latest_stage: `${candidate.stage.name}`, creation_date: `${candidate.creation_date}`, update_date: `${candidate.updated_date}`}
+                    let post = {candidate_id: `${candidate._id}`, candidate_meta_id: `${candidate.meta_id}`, candidate_name: `${candidate.name}`, origin: `${candidate.origin}`, source: 'undefined', position_name: `${candidate.position_name}`, position_id: `${candidate.position_id}`, position_state: `${candidate.position_state}`, latest_stage: `${candidate.stage.name}`, tags: `${candidate.tags}`, creation_date: `${candidate.creation_date}`, update_date: `${candidate.updated_date}`}
                     db.query(update_sql, post, (err, result) => {
                         if(err) {
                             console.log(err);
@@ -57,7 +74,7 @@ const insertCandidatesToDb = (candidates_batch) => {
 
                 } else {
                     let update_sql = `UPDATE breezySQL.candidates SET ? WHERE candidate_id = '${candidate._id}'`
-                    let post = {candidate_id: `${candidate._id}`, candidate_meta_id: `${candidate.meta_id}`, origin: `${candidate.origin}`, source: `${candidate.source.name}`, position_name: `${candidate.position_name}`, position_id: `${candidate.position_id}`, position_state: `${candidate.position_state}`, latest_stage: `${candidate.stage.name}`, creation_date: `${candidate.creation_date}`, update_date: `${candidate.updated_date}`}
+                    let post = {candidate_id: `${candidate._id}`, candidate_meta_id: `${candidate.meta_id}`, candidate_name: `${candidate.name}`, origin: `${candidate.origin}`, source: `${candidate.source.name}`, position_name: `${candidate.position_name}`, position_id: `${candidate.position_id}`, position_state: `${candidate.position_state}`, latest_stage: `${candidate.stage.name}`, tags: `${candidate.tags}`, creation_date: `${candidate.creation_date}`, update_date: `${candidate.updated_date}`}
                     db.query(update_sql, post, (err, result) => {
                         if(err) {
                             console.log(err);
@@ -70,7 +87,7 @@ const insertCandidatesToDb = (candidates_batch) => {
 
             } else if (candidate.source === undefined || candidate.source === null) {
                 let sql = 'INSERT INTO breezySQL.candidates SET ?' 
-                let post = {candidate_id: `${candidate._id}`, candidate_meta_id: `${candidate.meta_id}`, origin: `${candidate.origin}`, source: 'undefined', position_name: `${candidate.position_name}`, position_id: `${candidate.position_id}`, position_state: `${candidate.position_state}`, latest_stage: `${candidate.stage.name}`, creation_date: `${candidate.creation_date}`, update_date: `${candidate.updated_date}`}
+                let post = {candidate_id: `${candidate._id}`, candidate_meta_id: `${candidate.meta_id}`, candidate_name: `${candidate.name}`, origin: `${candidate.origin}`, source: 'undefined', position_name: `${candidate.position_name}`, position_id: `${candidate.position_id}`, position_state: `${candidate.position_state}`, latest_stage: `${candidate.stage.name}`, tags: `${candidate.tags}`, creation_date: `${candidate.creation_date}`, update_date: `${candidate.updated_date}`}
                 db.query(sql, post, (err, result) => {
                     if(err) {
                         console.log(err);
@@ -82,7 +99,7 @@ const insertCandidatesToDb = (candidates_batch) => {
 
             } else {
                 let sql = 'INSERT INTO breezySQL.candidates SET ?' 
-                let post = {candidate_id: `${candidate._id}`, candidate_meta_id: `${candidate.meta_id}`, origin: `${candidate.origin}`, source: `${candidate.source.name}`, position_name: `${candidate.position_name}`, position_id: `${candidate.position_id}`, position_state: `${candidate.position_state}`, latest_stage: `${candidate.stage.name}`, creation_date: `${candidate.creation_date}`, update_date: `${candidate.updated_date}`}
+                let post = {candidate_id: `${candidate._id}`, candidate_meta_id: `${candidate.meta_id}`, candidate_name: `${candidate.name}`, origin: `${candidate.origin}`, source: `${candidate.source.name}`, position_name: `${candidate.position_name}`, position_id: `${candidate.position_id}`, position_state: `${candidate.position_state}`, latest_stage: `${candidate.stage.name}`, tags: `${candidate.tags}`, creation_date: `${candidate.creation_date}`, update_date: `${candidate.updated_date}`}
                 db.query(sql, post, (err, result) => {
                     if(err) {
                         console.log(err);
@@ -94,7 +111,7 @@ const insertCandidatesToDb = (candidates_batch) => {
             }
         }
        
-        
+        console.log(`Candidates anonymized: ${chalk.yellow(anonymized_counter)}`)
         console.log(`Candidates updated within last ${days_update} days: ${chalk.green(new_counter)}`)
         console.log(`No updates within last ${days_update} days: ${chalk.blue(old_counter)}`)
         console.log(" ");
