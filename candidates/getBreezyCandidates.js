@@ -11,6 +11,8 @@ const insertCandidatesToDb = require('./insertCandidatesToDb')
 
 const movedCandidates = require('../movedCandidates')
 
+const names_and_tags = require('../names_and_tags')
+
 // ---------------------------
 
 const getBreezyCandidates = async (position_ids) => {
@@ -29,7 +31,8 @@ const getBreezyCandidates = async (position_ids) => {
                 candidate.position_state = position.position_state
             }
             
-            insertCandidatesToDb(candidates_batch)
+            names_and_tags(candidates_batch)
+            // insertCandidatesToDb(candidates_batch)
             console.log(`${chalk.underline(position.position_name)} inserted to DB  /  ${position_ids.indexOf(position) + 1} of ${position_ids.length}`)
         } catch (e) {
 

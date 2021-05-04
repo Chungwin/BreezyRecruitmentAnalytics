@@ -7,6 +7,13 @@ const { DB_HOST, DB_USER, DB_PASSWORD, DATABASE } = require('../config')
 
 const insertCandidatesToDb = (candidates_batch) => {
 
+
+    // Privacy Check - 6 months
+    // Update Check - 30 days
+
+
+
+
     const db = mysql.createConnection({
         host: DB_HOST,
         user: DB_USER,
@@ -14,7 +21,7 @@ const insertCandidatesToDb = (candidates_batch) => {
         database: DATABASE
     })
 
-    const set_days = 30
+    const days_update = 30
     var new_counter = 0
     var old_counter = 0
 
@@ -25,10 +32,9 @@ const insertCandidatesToDb = (candidates_batch) => {
         }
 
         let db_candidate_ids = result.map( obj => { return obj.candidate_id })
-        let thirty_days_ago = new Date().getTime() - 1000 * 60 * 60 * 24 * set_days
+        let thirty_days_ago = new Date().getTime() - 1000 * 60 * 60 * 24 * days_update
 
         for (var candidate of candidates_batch) {
-
             let update_date_format = candidate.updated_date
             let update_date = Date.parse(update_date_format)
             
@@ -89,8 +95,8 @@ const insertCandidatesToDb = (candidates_batch) => {
         }
        
         
-        console.log(`Candidates updated within last ${set_days} days: ${chalk.green(new_counter)}`)
-        console.log(`No updates within last ${set_days} days: ${chalk.blue(old_counter)}`)
+        console.log(`Candidates updated within last ${days_update} days: ${chalk.green(new_counter)}`)
+        console.log(`No updates within last ${days_update} days: ${chalk.blue(old_counter)}`)
         console.log(" ");
         
         db.end()

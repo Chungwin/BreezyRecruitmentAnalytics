@@ -69,17 +69,11 @@ const getStreams = async (ids) => {
                         action.stage = ids[i].latest_stage
                         action.creation_date = ids[i].creation_date
                     }
-                    insertStreamToDb(candidateStream) 
-                    
+                    insertStreamToDb(candidateStream)    
                 }
                 console.log(`${chalk.green(i)} of ${chalk.grey(ids.length)}  /  candidate stream updated  /  ${ids[i].position_name}`)
 
             } catch(e) {
-                // If 412 candidate not on requested position
-                    // Get Meta_ID --> ids[i].candidate_meta_id
-                    // SELECT * FROM breezySQL.canidates WHERE candidate_meta_id = ids[i].candidate_meta_id
-                    // Get new and old position(s)
-                    // Mark as moved in DB
                 if (e.statusCode === 412 || e.statusCode === 500) {
                     var fullError = JSON.parse(e.error)
                     var errorObj = {
