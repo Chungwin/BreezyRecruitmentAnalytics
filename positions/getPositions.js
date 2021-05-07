@@ -21,7 +21,7 @@ const getPositions = async () => {
             var response = await request_promise({ url: `https://api.breezy.hr/v3/company/${COMPANY_ID}/positions?state=${state}`, headers: {'Authorization': AUTH_TOKEN} })
             var responseJson = JSON.parse(response)
 
-            insertToDb(responseJson)
+            await insertToDb(responseJson)
             console.log(`DB updated with ${state} positions`)
             
         } catch (e) {

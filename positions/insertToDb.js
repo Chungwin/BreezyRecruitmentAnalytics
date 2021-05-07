@@ -1,59 +1,54 @@
 const mysql = require('mysql')
 const { DB_HOST, DB_USER, DB_PASSWORD, DATABASE } = require('../config')
+const logger = require('../winston/logger')
 
 // --------------------------
 
-const insertToDb = (responseJson) => {
+const insertToDb = async (responseJson) => {
 
-    //Creat Connection
-    const db = mysql.createConnection({
-        host: DB_HOST,
-        user: DB_USER,
-        password: DB_PASSWORD, 
-        database: DATABASE 
-    })
+    try {
+        const db = mysql.createConnection({
+            host: DB_HOST,
+            user: DB_USER,
+            password: DB_PASSWORD, 
+            database: DATABASE 
+        })
 
+        var db_position_ids = await new Promise((resolve, reject) => {
 
-    class Position {
-        constructor(position_id, position_state, position_name, department = null) {
-            this.position_id = position_id
-            this.position_state = position_state
-            this.position_name = position_name
-            this.department = department
-        }
-    }
+            let sql = 'SELECT * FROM breezySQL.positions'
+            db.query(sql, (err, result) => {
+                if(err) {
+                    reject(err);
+                }
 
+                var ids = result.map(db_position => { return db_position.position_id})
+                resolve(ids)
+            })
 
-    for (var obj of responseJson) {
-  
-        var position = new Position (obj._id, obj.state, obj.name, obj.department)
+        })
 
-        // Check if already exists
-        let sql = 'SELECT * FROM breezySQL.positions'
-        db.query(sql, (err, result) => {
-            if(err) console.log(err) 
-            
-            var ids = result.map(db_position => { return db_position.position_id })
-            if (ids.includes(position.position_id)) {
-                return
-                
+    
+        for (var obj of responseJson) {
+
+            if (db_position_ids.includes(obj._id)) {
+                continue
             } else {
-                // Insert new positions
-                let post = position
+                let post = {position_id: `${obj._id}`, position_state: `${obj.state}`, position_name: `${obj.name}`, department: `${obj.department}`}
                 let sql = 'INSERT INTO breezySQL.positions SET ?'
                 db.query(sql, post, (err, result) => {
-                    if(err) console.log(err)
-                    
+                if(err) console.log(err)
+                
                 })
             }
-        
-            
-        }) 
+        }
 
-        
-    } 
+        db.end()
 
-    db.end()
+    } catch(e) {
+        console.log(e);
+    }
+
 }
 
 module.exports = insertToDb
