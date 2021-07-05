@@ -10,6 +10,13 @@ If your company's recruitment department uses **[Breezy HR](https://breezy.hr)**
 
 At the moment I’m using this app with **MySQL** and **Tableau** for data-visualisation!
 
+_____________
+
+## Project status: 
+This project started as a personal side project mainly for personal learning purposes. Fortunately, this MVP caught the attention of our Jimdo Data Department and they agreed to join forces on this Dashbaord and beyond. Therefore, this app won't be maintained and improved anymore, at least not in this repo! 
+
+_____________
+
 ## Installation
 - Node.js
 - MySQL
@@ -29,12 +36,6 @@ DATABASE=[db_name]
 Run **positions.js** to keep your position data uptodate (published and closed ones)  
 Run **candidates.js** to keep updating the latest candidate dataw  
 Run **stream.js** to keep updating the lastest candidate actions   
-
-## Project status: 
-This project is just at the very beginning and far from finished. First and foremost, it’s a training ground for me, a non-professional programmer, with the pleasant side effect that it scratches my own itch as a Tech Recruiter.
-
-## Currently working on
-Identifying and handling candidates that were moved from one position to another.  
 
 ## Planned next: 
 Better error tracing and resolving.  
