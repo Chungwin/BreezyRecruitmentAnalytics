@@ -10,12 +10,8 @@ If your company's recruitment department uses **[Breezy HR](https://breezy.hr)**
 
 At the moment I’m using this app with **MySQL** and **Tableau** for data-visualisation!
 
-_____________
-
 ## Project status: 
 This project started as a personal side project mainly for personal learning purposes. Fortunately, this MVP caught the attention of our Jimdo Data Department and they agreed to join forces on this Dashbaord and beyond. Therefore, this app won't be maintained and improved anymore, at least not in this repo! 
-
-_____________
 
 ## Installation
 - Node.js
